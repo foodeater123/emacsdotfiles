@@ -227,7 +227,7 @@ org-startup-indented t)
       ido-default-buffer-method 'selected-window
       ido-use-filename-at-point 'guess
       ido-create-new-buffer 'always
-      ido-create-new-buffer nil)
+   )
 
 
 ;; (vertico-mode)
@@ -376,26 +376,6 @@ org-startup-indented t)
 (setq isearch-lazy-count t)
 
 
-  (defun copy-line ()
-    "Copy lines (as many as prefix argument) in the kill ring.
-      Ease of use features:
-      - Move to start of next line.
-      - Appends the copy on sequential calls.
-      - Use newline as last char even on the last line of the buffer.
-      - If region is active, copy its lines."
-    (interactive "p")
-    (let ((beg (line-beginning-position))
-          (end (line-end-position arg)))
-      (when mark-active
-        (if (> (point) (mark))
-            (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
-          (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
-      (if (eq last-command 'copy-line)
-          (kill-append (buffer-substring beg end) (< end beg))
-        (kill-ring-save beg end)))
-    (kill-append "\n" nil)
-
-)
  (defun quick-copy-line ()
       "Copy the whole line that point is on and move to the beginning of the next line.
     Consecutive calls to this command append each line to the
