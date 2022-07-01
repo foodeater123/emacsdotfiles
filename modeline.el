@@ -33,11 +33,12 @@
 
 
 
-(setq poont "")
-(setq-local poont1 "")
-(setq-local poont2 "")
 
+(setq poont1 "")
+(setq poont2 "")
+(setq poontdiv nil)
 (setq test123 nil)
+(setq poontwam nil)
 
 
 ; :background "#392a48" :foreground "#6ae4b9"
@@ -48,10 +49,11 @@
   (setq-local poontd 0)
 (setq-local poont1 "")
 (setq-local poont2 "")
+(setq poontdiv (/ (float (line-number-at-pos)) ( float (count-lines (point-min) (point-max)) )))
 
 (setq test123 (- width-mess (iamkillingtime)))
 ;(count-lines (point-min) (point-max))
-(dotimes (round (* (float test123) (/ (float (line-number-at-pos)) ( float (count-lines (point-min) (point-max)) ))))
+(dotimes (round (* (float test123) (if (equal poontdiv 1.0e+INF) 1 poontdiv )))
 
     (if (cl-evenp poontd)
 	(setq poont1 (concat poont1 "―"))
@@ -71,7 +73,7 @@
       (setq poontwam (not poontwam))
       )
 
-   (setq poont (format "%s%s" poont1 poont2))
+
    )
 (defun iamkillingtime()
   ( + 17
@@ -94,6 +96,9 @@
   (let* ((available-width (- (window-width) (length left) -7)))
     (setq width-mess available-width)
     (format (format "%%s%%%ds " available-width) left right)))
+
+
+
 (setq-default mode-line-format
       '((:eval (simple-mode-line-render
                 ;; left
@@ -136,7 +141,9 @@
 
 
 
+
 	   (propertize  "                 %p             " 'face '(:background "#392a48" :foreground "#6ae4b9"))
+
 
 
 		    '(:eval(list(custom-modeline-time)))
@@ -154,11 +161,8 @@
 
 
 			       '(:eval  (if (cogent-line-selected-window-active-p)
-			  (propertize (progn (percatage-through) poont) 'face '(:foreground "#fdf5e8") )
-			  (propertize " " 'face 'font-lock-constant-face)
-
-			  )
-					)
+			  (propertize (progn (percatage-through) (format "%s%s" poont1 poont2) )  'face '(:foreground "#fdf5e8") )
+			  (propertize " " 'face 'font-lock-constant-face)))
 
 
 
