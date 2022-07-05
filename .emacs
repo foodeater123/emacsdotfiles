@@ -47,8 +47,6 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
         (habit . traffic-light))      				    				      )
  (load-theme 'modus-vivendi t)
 
-(setq visible-bell t)
-
 
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -68,7 +66,7 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
 (menu-bar-mode -1)
 (setq visible-bell t)
 
-(set-face-attribute 'default nil :font "Fira Code" :height 196)
+(set-face-attribute 'default nil :font "MonoLisa" :height 196)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 	     ("melpa" . "http://melpa.org/packages/")))
 
@@ -89,6 +87,33 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
 	  )
  (setq-default message-log-max 20)
 
+(let ((alist '((?! . "\\(?:!\\(?:==\\|[!=]\\)\\)")
+               (?# . "\\(?:#\\(?:###?\\|_(\\|[!#(:=?[_{]\\)\\)")
+               (?$ . "\\(?:\\$>\\)")
+               (?& . "\\(?:&&&?\\)")
+               (?* . "\\(?:\\*\\(?:\\*\\*\\|[/>]\\)\\)")
+               (?+ . "\\(?:\\+\\(?:\\+\\+\\|[+>]\\)\\)")
+               (?- . "\\(?:-\\(?:-[>-]\\|<<\\|>>\\|[<>|~-]\\)\\)")
+               (?. . "\\(?:\\.\\(?:\\.[.<]\\|[.=?-]\\)\\)")
+               (?/ . "\\(?:/\\(?:\\*\\*\\|//\\|==\\|[*/=>]\\)\\)")
+               (?: . "\\(?::\\(?:::\\|\\?>\\|[:<-?]\\)\\)")
+               (?\; . "\\(?:;;\\)")
+               (?< . "\\(?:<\\(?:!--\\|\\$>\\|\\*>\\|\\+>\\|-[<>|]\\|/>\\|<[<=-]\\|=\\(?:=>\\|[<=>|]\\)\\||\\(?:||::=\\|[>|]\\)\\|~[>~]\\|[$*+/:<=>|~-]\\)\\)")
+               (?= . "\\(?:=\\(?:!=\\|/=\\|:=\\|=[=>]\\|>>\\|[=>]\\)\\)")
+               (?> . "\\(?:>\\(?:=>\\|>[=>-]\\|[]:=-]\\)\\)")
+               (?? . "\\(?:\\?[.:=?]\\)")
+               (?\[ . "\\(?:\\[\\(?:||]\\|[<|]\\)\\)")
+               (?\ . "\\(?:\\\\/?\\)")
+               (?\] . "\\(?:]#\\)")
+               (?^ . "\\(?:\\^=\\)")
+               (?_ . "\\(?:_\\(?:|?_\\)\\)")
+               (?{ . "\\(?:{|\\)")
+               (?| . "\\(?:|\\(?:->\\|=>\\||\\(?:|>\\|[=>-]\\)\\|[]=>|}-]\\)\\)")
+               (?~ . "\\(?:~\\(?:~>\\|[=>@~-]\\)\\)"))))
+  (dolist (char-regexp alist)
+    (set-char-table-range composition-function-table (car char-regexp)
+                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
 ;; dired mode
 (setq insert-directory-program "/usr/local/bin/gls")
 (setq dired-dwim-target t)
@@ -96,6 +121,7 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
 (require 'diredfl)
 (require 'dired-rainbow)
 (diredfl-global-mode t)
+(add-hook 'dired-after-readin-hook (lambda () (text-scale-increase 1)))
 
 
 (dired-rainbow-define-chmod directory "#6cb2eb" "d.*") (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml")) (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata")) (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx")) (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt")) (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc")) (dired-rainbow-define media "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac")) (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg")) (dired-rainbow-define log "#c17d11" ("log")) (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim")) (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js")) (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java")) (dired-rainbow-define executable "#8cc4ff" ("exe" "msi")) (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar")) (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp")) (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem")) (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf")) (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak")) (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules")) (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")
@@ -133,6 +159,10 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
 (add-hook 'magit-mode-hook 'turn-on-tempbuf-mode)
 (add-hook 'lisp-mode-hook 'turn-on-tempbuf-mode)
 (add-hook 'inferior-lisp-mode-hook 'turn-on-tempbuf-mode)
+(add-hook 'ibuffer-mode-hook 'turn-on-tempbuf-mode)
+(add-hook 'help-mode-hook 'turn-on-tempbuf-mode)
+(add-hook 'process-menu-mode-hook 'turn-on-tempbuf-mode)
+
 
 ;;Org Mode
 ;(add-hook 'org-mode-hook (lambda ()(variable-pitch-mode 1)))
@@ -200,6 +230,7 @@ org-startup-indented t)
 
 
 (add-hook 'slime-repl-mode-hook 'turn-on-tempbuf-mode)
+(add-hook 'slime-repl-mode-hook  #'rainbow-delimiters-mode)
 
 ;;soliare mode
 
@@ -219,7 +250,7 @@ org-startup-indented t)
 (global-set-key (kbd "C-x b") 'ido-switch-buffer)
 
 (ido-mode 1) ;; C-t to toggle regexp
-( ido-everywhere t)
+(ido-everywhere t)
 (setq    ; M-r in iseatch to toggle regexp
       ido-enable-flex-matching t  ; use initials
       ido-buffer-disable-smart-matches nil
@@ -228,7 +259,7 @@ org-startup-indented t)
       ido-use-filename-at-point 'guess
       ido-create-new-buffer 'always
    )
-
+(define-key ido-file-completion-map "\C-o" 'ido-fallback-command)
 
 ;; (vertico-mode)
 ;; (setq vertico-cycle t)
@@ -412,3 +443,7 @@ org-startup-indented t)
 (indent-for-tab-command))
 
 (global-set-key (kbd "s-<return>") 'open-line-below)
+
+
+(super-save-mode +1)
+(setq super-save-remote-files nil)
