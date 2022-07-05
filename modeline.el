@@ -1,5 +1,4 @@
-;;; -*- lexical-binding: t -*-
-
+(setq lexical-binding t)
 
 (require 'all-the-icons)
 (defun custom-modeline-time ()
@@ -44,20 +43,23 @@
 ; :background "#392a48" :foreground "#6ae4b9"
 
 ;; make two strings and combine them
+
 (defun percatage-through()
 
   (setq-local poontd 0)
 (setq-local poont1 "")
 (setq-local poont2 "")
 (setq poontdiv (/ (float (line-number-at-pos)) ( float (count-lines (point-min) (point-max)) )))
+(setq poontdiv (if (> poontdiv 1) 1 poontdiv) )
 
-(setq test123 (- width-mess (iamkillingtime)))
+  (setq test123 (- width-mess iamkillingtime 20 )) ;(if (buffer-modified-p) 4 (if buffer-read-only 3 0)
+
 ;(count-lines (point-min) (point-max))
 (dotimes (round (* (float test123) (if (equal poontdiv 1.0e+INF) 1 poontdiv )))
 
     (if (cl-evenp poontd)
-	(setq poont1 (concat poont1 "―"))
-	(setq poont2 (concat poont2 "―"))
+	(setq poont1 (concat poont1 "_"))
+	(setq poont2 (concat poont2 "_"))
        )
     (setq poontd (+ 1 poontd))
 
@@ -71,17 +73,15 @@
 	  (setq poont2 (concat poont2 " "))
 	  )
       (setq poontwam (not poontwam))
-      )
+      ))
 
 
-   )
-(defun iamkillingtime()
-  ( + 17
-    (string-width	(prin1-to-string major-mode))
-     ( string-width (prin1-to-string (line-number-at-pos)))
-     (string-width (prin1-to-string (current-column)))
 
-     ))
+   (setq iamkillingtime nil)
+
+
+
+
 
 
 ;;(x-display-pixel-width)
@@ -95,7 +95,7 @@
 
   (let* ((available-width (- (window-width) (length left) -7)))
     (setq width-mess available-width)
-    (format (format "%%s%%%ds " available-width) left right)))
+    (format (format "%%s%%%ds" available-width) left right)))
 
 
 
@@ -157,32 +157,40 @@
 
 
 
+			      '(:eval  (if (cogent-line-selected-window-active-p)
+					   (propertize (progn
+							 (setq iamkillingtime
+							       ( +
+								 (when (stringp mode-name)
+								(string-width  mode-name))
+								 ( string-width (prin1-to-string (line-number-at-pos)))
+								 (string-width (prin1-to-string (current-column)))
+
+
+								 ))
+							 (percatage-through) (format "%s%s" poont1 poont2))
+						       'face '(:foreground "#fdf5e8")
+						       )
+					 (propertize " " 'face 'font-lock-constant-face)
+	 				 )
+				       )
 
 
 
-			       '(:eval  (if (cogent-line-selected-window-active-p)
-			  (propertize (progn (percatage-through) (format "%s%s" poont1 poont2) )  'face '(:foreground "#fdf5e8") )
-			  (propertize " " 'face 'font-lock-constant-face)))
-
-
-
-;	   '(:eval (  propertize  (progn (percatage-through) poont) 'face '(:foreground "#FFFFFF") ) )
-
-	   ;; '(:eval (propertize   "-" 'display  `((space :align-to (- 1 (+ 15 (+ right right-fringe right-margin) ,
-	   ;; 								      ( + (string-width
-	   ;; 									(prin1-to-string major-mode))
-	   ;; 									  ( string-width (prin1-to-string (line-number-at-pos)))
-	   ;; 									  (string-width (prin1-to-string (current-column)))
-	   ;; 									   ))
-
-
-	   ;; 								       )
-	   ;; 								 )
-	   ;; 						    )
-	   ;; 					     )
-	   ;; 			)
 
 	   (propertize  "     %l:%c     " 'face '(:background "#00384d" :foreground "darkcyan" :slant italic))
-(propertize "     %m     " 'face '(:background "#392a48" :foreground "#6ae4b9"))
+	   ;; (propertize (format "     %s     " (if (stringp mode-name)
+	   ;; 					  (if (string= mode-name "Dired by name") "browse" mode-name) " " )  )
+	   ;; 	       'face '(:background "#392a48" :foreground "#6ae4b9"))
+	   '(:eval (if (if(stringp mode-name) (< 8 (string-width mode-name)) nil  )
+		       (propertize  "%m       "    'face '(:background "#392a48" :foreground "#6ae4b9"))
+		     (propertize  "   %m           "	      'face '(:background "#392a48" :foreground "#6ae4b9")
+)
 
-))))))
+	       ))
+
+))
+)
+)
+)
+)
