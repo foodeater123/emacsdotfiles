@@ -135,7 +135,7 @@
   (if  (projectile-project-root)
 	(projectile-project-root)
 
-      (file-name-directory buffer-file-name)
+    default-directory
 
       )
   )
