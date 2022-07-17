@@ -110,6 +110,8 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
                (?{ . "\\(?:{|\\)")
                (?| . "\\(?:|\\(?:->\\|=>\\||\\(?:|>\\|[=>-]\\)\\|[]=>|}-]\\)\\)")
                (?~ . "\\(?:~\\(?:~>\\|[=>@~-]\\)\\)"))))
+
+
   (dolist (char-regexp alist)
     (set-char-table-range composition-function-table (car char-regexp)
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
@@ -162,6 +164,8 @@ modus-themes-org-agenda ; this is an alist: read the manual or its doc string
 (add-hook 'ibuffer-mode-hook 'turn-on-tempbuf-mode)
 (add-hook 'help-mode-hook 'turn-on-tempbuf-mode)
 (add-hook 'process-menu-mode-hook 'turn-on-tempbuf-mode)
+(add-hook 'eshell-mode-hook 'turn-on-tempbuf-mode)
+
 
 
 ;;Org Mode
@@ -175,15 +179,7 @@ org-startup-indented t)
 
 (set-face-attribute 'variable-pitch nil :family "IBM Plex Serif" :height 210)
 
-(add-to-list
-  'default-frame-alist'(ns-transparent-titlebar . t))
-(add-to-list
- 'default-frame-alist'(ns-appearance . dark))
-
-;;Golden ratio
-
-;(require 'golden-ratio)
-;(golden-ratio-mode)
+;(add-to-list  'default-frame-alist'(ns-transparent-titlebar . t)) (add-to-list 'default-frame-alist'(ns-appearance . dark))
 
 
 ;; Kill proccses without asking
@@ -334,7 +330,6 @@ org-startup-indented t)
 ;; Dealing with annoying whitesplace
 (require 'ws-butler)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -352,7 +347,7 @@ org-startup-indented t)
 
 ;;ace-jump mode(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 (define-key global-map (kbd "M-p") 'ace-jump-mode)
-(define-key global-map (kbd "\§") 'ace-jump-char-mode)
+(define-key global-map (kbd "M-o") 'ace-jump-char-mode)
 (define-key global-map (kbd "s-.") 'ace-jump-mode-pop-mark)
 (global-set-key (kbd "s-§") #'(lambda()
 			       (interactive)
@@ -447,3 +442,22 @@ org-startup-indented t)
 
 (super-save-mode +1)
 (setq super-save-remote-files nil)
+;; so i do not have to tyoe yes or no you know
+
+(setq use-short-answers t)
+
+;; (autoload 'paredit-mode "paredit"
+;;       "Minor mode for pseudo-structurally editing Lisp code." t)
+;; (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
+;; (add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
+;; (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
+;; (add-hook 'slime-mode-hook            (lambda () (paredit-mode +1)))
+;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+
+
+;;  eshell
+(load-file "/Users/pranshu/.emacs.d/eshell.elc")
+
+
+;; undo
+ (setq undo-limit 1000000)
