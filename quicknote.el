@@ -23,7 +23,7 @@
 (setq path "nil")
 (setq bname nil)
 
-(global-set-key (kbd "M-§") 'setstuff)
+(global-set-key [?\C-`] 'setstuff)
 
 (defun setstuff()
   (interactive)
@@ -65,12 +65,13 @@
    :poshandler 'posframe-poshandler-frame-center
 
    :border-color "#00bcff"
-   :width (round (* (frame-width) 0.70))
-   :height (round (* (frame-height) 0.85))
+   :width (round (* (frame-width) 0.75))
+   :height (round (* (frame-height) 0.90))
    :border-width 2
    :override-parameters '((left-fringe . 20)
 			  (right-fringe . 20)
 			  (cursor-type . box)
+			  (alpha . 95)
 			  )
    :accept-focus t
    :font
@@ -116,6 +117,7 @@
    :override-parameters '((left-fringe . 20)
 			  (right-fringe . 20)
 			  (cursor-type . box)
+			  (alpha . 98)
 			  )
    :accept-focus t
 
@@ -149,7 +151,7 @@
       (if (get-buffer-window "*eshell*")
 	 (delete-window (get-buffer-window "*eshell*"))	        ;;
 	 (progn			        ;;
-	   (split-window-below)	        ;;
+	   (split-window-below 10)	        ;;
 	   (other-window 1)		        ;;
 	  (switch-to-buffer "*eshell*")        ;;
 	   )
